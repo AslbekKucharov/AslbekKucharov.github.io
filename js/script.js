@@ -1,9 +1,11 @@
 'use strict';
 
 let saveButton = document.querySelector('.save_btn');
+let deleteAllnotesBtn = document.querySelector('.delete_all_button');
 let textarea = document.querySelector('.textarea');
 let sidebar = document.querySelector('.sidebar');
 let noteTitle = document.querySelector('.note_title');
+let searchInput = document.querySelector('.search');
 let div = document.createElement('div');
 let newNoteTitle = [];
 let getNewNoteTitle  = [];
@@ -21,6 +23,11 @@ sidebar.append(div);
 
 if(!localStorage.getItem('Note')){
     div.textContent = 'No notes yet :(';
+}
+
+deleteAllnotesBtn.onclick = () => {
+    localStorage.clear();
+    window.location.reload();
 }
 
 saveButton.onclick = function (){
@@ -54,8 +61,7 @@ saveButton.onclick = function (){
         newNotes.push(textarea.value);
         localStorage.setItem('Note', JSON.stringify(newNotes));
         getNewNotes = JSON.parse(localStorage.getItem('Note'));
-        noteCreator(getNewNotes);
-        titleCreator(getNewNoteTitle);
+        renderPosts(getNewNoteTitle, getNewNotes, sidebar);
     }
 
     window.location.reload();
@@ -70,8 +76,8 @@ window.onload = function (){
         if(localStorage.getItem('Note') != ( undefined || null ) && localStorage.getItem('Note_Title') != (undefined || null)){
             oldNotes = JSON.parse(localStorage.getItem('Note'));
             oldNoteTitles = JSON.parse(localStorage.getItem('Note_Title'));
-            noteCreator(oldNotes);
-            titleCreator(oldNoteTitles);
+            renderPosts(oldNoteTitles, oldNotes, sidebar);
+            handleInput(searchInput.value, oldNoteTitles);
             div.remove();
         } else {
             div.textContent = 'No notes yet :(';
@@ -80,24 +86,48 @@ window.onload = function (){
     
 }
 
-function titleCreator(title){
-    title.forEach( items => {
-        titleContainer = document.createElement('h2');
-        titleContainer.classList.add('note_title_block');
-        noteContainer.prepend(titleContainer); 
-        titleContainer.textContent = items;
-    });
-    noteTitle.value = '';
+const createTitle = title => {
+    const noteTitle = document.createElement('h1');
+    noteTitle.classList.add('note_title_block');
+    noteTitle.textContent = title;
+    return noteTitle;
 }
 
-function noteCreator(argument){
-    div.remove();
-    
-    argument.forEach( item => {
-        noteContainer = document.createElement('div');
-        noteContainer.classList.add('note_block');
-        sidebar.append(noteContainer);
-        noteContainer.innerHTML = marked(item);
-    });
-    textarea.value = '';
+const createText = text => {
+    const noteText = document.createElement('p');
+    noteText.innerText = text;
+    return noteText;
 }
+
+const createBlogPost = (title, text) => {
+    const titleElement = createTitle(title);
+    const textElement = createText(text);
+    const container = document.createElement('div');
+    container.classList.add('note_block')
+    container.appendChild(titleElement);
+    container.appendChild(textElement);
+    return container;
+}
+
+
+const renderPosts = (titles, posts, container) => {
+	titles.forEach((title, index) => {
+  
+  	const post = createBlogPost(title, posts[index]);
+    container.appendChild(post);
+  
+  })
+}
+
+
+/************  Search  ***********/
+
+function handleInput(text, arr){
+    if(text.length === 0){
+        return arr;
+    }
+    return arr.filter( el => {
+        return el.toLowerCase().indexOf(text.toLowerCase) > -1;
+    })
+}
+
