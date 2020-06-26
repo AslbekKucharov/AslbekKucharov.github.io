@@ -18,6 +18,10 @@ body{
         flex-direction: column;
         justify-content: center;
     }
+    .textarea{
+        margin-left: 80px;
+        margin-right: 80px;
+    }
     .saved-notes{
         margin-top: 50px;
     }
