@@ -8,15 +8,15 @@ body{
 @media (max-width:500px){
     body{
         min-width: 490px;
-        max-width: 501px;
+        max-width: 500px;
+        padding-left: 50px;
+        padding-right: 50px;
     }
     .container{
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: center;
-        padding-left: 50px;
-        padding-right: 50px;
     }
     .saved-notes{
         margin-top: 50px;
