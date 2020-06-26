@@ -5,11 +5,12 @@ body{
     max-width: 1920px;
     min-width: 1140px;
 }
-@media (max-width:500px){
+@media (max-width:600px){
     body{
-        max-width: 500px;
-        padding-left: 50px;
-        padding-right: 50px;
+        min-width: 500px;
+        max-width: 550px;
+        padding-left: 100px;
+        padding-right: 100px;
     }
     .container{
         display: flex;
@@ -17,12 +18,9 @@ body{
         flex-direction: column;
         justify-content: center;
     }
-    .textarea{
-        margin-left: 80px;
-        margin-right: 80px;
-    }
     .saved-notes{
         margin-top: 50px;
+        margin-left: 0;
     }
     
 }
